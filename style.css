@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Components */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.glass-stat {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Animations */
+@keyframes slow-zoom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.animate-slow-zoom {
+    animation: slow-zoom 20s infinite alternate ease-in-out;
+}
+
+@keyframes bounce-custom {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-bounce-custom {
+    animation: bounce-custom 2s infinite;
+}
+
+/* Scroll Reveal Classes */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.8s ease-out;
+}
+
+.active-reveal {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Unit Buttons Style */
+.unit-btn.active {
+    background-color: #E30613; /* brand-red */
+    border-color: #E30613;
+    color: white;
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(227, 6, 19, 0.4);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #0054A6;
+}
