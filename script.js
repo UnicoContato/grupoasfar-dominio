@@ -1,110 +1,125 @@
-// Header Logic
-const header = document.getElementById('main-header');
-let lastScroll = 0;
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
+document.addEventListener('DOMContentLoaded', () => {
     
-    // Add blur background
-    if (currentScroll > 50) {
-        header.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-md');
-        header.classList.remove('py-4');
-    } else {
-        header.classList.remove( 'backdrop-blur-md', 'shadow-md');
-        header.classList.add('py-4');
-    }
+    // HEADER: Blur e Esconder no Scroll
+    const header = document.getElementById('main-header');
+    let lastScroll = 0;
 
-    // Hide/Show on scroll
-    if (currentScroll > lastScroll && currentScroll > 100) {
-        header.style.transform = 'translateY(-100%)';
-    } else {
-        header.style.transform = 'translateY(0)';
-    }
-    lastScroll = currentScroll;
-});
-
-// Mobile Menu
-const btn = document.getElementById('mobile-menu-btn');
-const menu = document.getElementById('mobile-menu');
-
-btn.addEventListener('click', () => {
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('flex');
-});
-
-// Scroll Reveal Observer
-const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
-
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active-reveal');
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 50) {
+            header.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-md');
+            header.classList.remove('py-4');
+        } else {
+            header.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md');
+            header.classList.add('py-4');
         }
+
+        if (currentScroll > lastScroll && currentScroll > 100) {
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            header.style.transform = 'translateY(0)';
+        }
+        lastScroll = currentScroll;
     });
-}, { threshold: 0.1 });
 
-revealElements.forEach(el => revealObserver.observe(el));
+    // MENU MOBILE
+    const btnMenu = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const menuLinks = menu.querySelectorAll('a');
 
-// Unit Switching Logic
-const units = {
-    1: {
-        name: "Droga Assis - Matriz",
-        address: "Av Rio Arinos, 1906W, Parque Residencial Santa Cruz",
-        zip: "Juara - MT, 78575-000",
-        cnpj: "09.496.232/0001-57",
-        map: "https://maps.google.com/maps?q=Av%20Rio%20Arinos%2C%201906W%2C%20Juara%20MT&t=&z=15&ie=UTF8&iwloc=&output=embed"
-    },
-    2: {
-        name: "Droga Assis - Jardim América",
-        address: "Av Brasil, 117-N, Jardim America",
-        zip: "Juara - MT, 78575-000",
-        cnpj: "09.496.232/0002-38",
-        map: "https://maps.google.com/maps?q=Av%20Brasil%2C%20117-N%2C%20Juara%20MT&t=&z=15&ie=UTF8&iwloc=&output=embed"
-    },
-    3: {
-        name: "Droga Assis - Centro",
-        address: "Av Ayrton Senna, 560 S, Centro (Anexo Pasqualotto)",
-        zip: "Juara - MT, 78575-000",
-        cnpj: "09.496.232/0003-19",
-        map: "https://maps.google.com/maps?q=Av%20Ayrton%20Senna%2C%20560%20S%2C%20Juara%20MT&t=&z=15&ie=UTF8&iwloc=&output=embed"
+    if (btnMenu) {
+        btnMenu.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        });
+
+        // Fechar menu ao clicar em link
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            });
+        });
     }
-};
 
-function switchUnit(id) {
-    // Update active button state
-    document.querySelectorAll('.unit-btn').forEach(btn => {
-        btn.classList.remove('active');
-        btn.classList.remove('text-white');
-        btn.classList.add('text-white/70');
-    });
-    
-    const activeBtn = document.getElementById(`btn-unit-${id}`);
-    activeBtn.classList.add('active', 'text-white');
-    activeBtn.classList.remove('text-white/70');
+    // SCROLL REVEAL (Animação ao rolar)
+    const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active-reveal');
+            }
+        });
+    }, { threshold: 0.1 });
 
-    // Update content with Fade Effect
-    const nameEl = document.getElementById('unit-name');
-    const addressEl = document.getElementById('unit-address');
-    const zipEl = addressEl.nextElementSibling;
-    const cnpjEl = document.getElementById('unit-cnpj');
-    const iframe = document.getElementById('map-frame');
+    revealElements.forEach(el => revealObserver.observe(el));
 
-    // Simple fade transition logic could be added here, currently direct switch
-    nameEl.textContent = units[id].name;
-    addressEl.textContent = units[id].address;
-    zipEl.textContent = units[id].zip;
-    cnpjEl.textContent = units[id].cnpj;
-    iframe.src = units[id].map;
-}
-
-// Modal Logic
-function toggleModal() {
+    // MODAL DE PRIVACIDADE
     const modal = document.getElementById('privacy-modal');
-    if (modal.classList.contains('hidden')) {
-        modal.classList.remove('hidden');
-        setTimeout(() => modal.firstElementChild.classList.add('opacity-100'), 10);
-    } else {
-        modal.firstElementChild.classList.remove('opacity-100');
-        setTimeout(() => modal.classList.add('hidden'), 300);
+    window.toggleModal = function() {
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.firstElementChild.classList.add('opacity-100'), 10);
+        } else {
+            modal.firstElementChild.classList.remove('opacity-100');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
     }
-}
+
+    // --- LÓGICA DE TROCA DE UNIDADES (CONTATO) ---
+    
+    const btns = [
+        document.getElementById('btn-unit-1'),
+        document.getElementById('btn-unit-2'),
+        document.getElementById('btn-unit-3')
+    ];
+
+    const infos = [
+        document.getElementById('info-unit-1'),
+        document.getElementById('info-unit-2'),
+        document.getElementById('info-unit-3')
+    ];
+
+    const mapIframe = document.getElementById('map-iframe');
+
+    const maps = {
+        1: "https://maps.google.com/maps?q=Av%20Rio%20Arinos%2C%201906W%2C%20Juara%20MT&t=&z=15&ie=UTF8&iwloc=&output=embed", // Matriz
+        2: "https://maps.google.com/maps?q=Av%20Brasil%2C%20117-N%2C%20Juara%20MT&t=&z=15&ie=UTF8&iwloc=&output=embed", // Jd America
+        3: "https://maps.google.com/maps?q=Av%20Ayrton%20Senna%2C%20560%20S%2C%20Juara%20MT&t=&z=15&ie=UTF8&iwloc=&output=embed"  // Pasqualotto
+    };
+
+    window.switchUnit = function(id) {
+        const index = id - 1;
+
+        // 1. Mapa
+        mapIframe.style.opacity = '0';
+        setTimeout(() => {
+            mapIframe.src = maps[id];
+            mapIframe.onload = () => { mapIframe.style.opacity = '1'; };
+        }, 300);
+
+        // 2. Botões (Abas)
+        btns.forEach((btn, i) => {
+            if (i === index) {
+                btn.classList.add('active-tab', 'text-white');
+                btn.classList.remove('text-slate-400', 'hover:text-white');
+            } else {
+                btn.classList.remove('active-tab', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:text-white');
+            }
+        });
+
+        // 3. Conteúdo (Infos)
+        infos.forEach((info, i) => {
+            if (i === index) {
+                info.classList.remove('hidden');
+                // Pequeno delay para animação funcionar se estiver usando opacity
+                setTimeout(() => info.classList.add('opacity-100'), 10);
+            } else {
+                info.classList.add('hidden');
+                info.classList.remove('opacity-100');
+            }
+        });
+    };
+});
